@@ -112,7 +112,7 @@ function init(){
 function getDepartments(){
 //Query for departments table
 db.promise().query(
-  'SELECT * FROM department ')
+  'SELECT * FROM departments ')
   .then(([fields,rows]) => {
     // print table with fields
     console.table(fields);
@@ -144,7 +144,7 @@ db.promise().query(
 function getEmployees(){
 //Query for employees table
 db.promise().query(
-  'SELECT * FROM employee ')
+  'SELECT * FROM employees ')
   .then(([fields,rows]) => {
     // print table with fields
     console.table(fields);
@@ -156,7 +156,20 @@ db.promise().query(
   });
 };
 
-function addsDepartment(){};
+function addsDepartment(){
+  // Query to add a department
+  db.promise().query(
+    'INSERT INTO * FROM employee ')
+    .then(([fields,rows]) => {
+      // print table with fields
+      console.table(fields);
+    })
+    .catch(console.log)
+    .then( ()=> {
+      console.log('Query for employees successful')
+      init();
+    });
+};
 
 function addsRole(){};
 
