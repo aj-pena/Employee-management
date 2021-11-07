@@ -22,9 +22,10 @@ const db = mysql.createConnection({
   },
   console.log('Connected to the emanagement database')
   );
+let menuData = '';
 
 // Menu options
-let menu = {
+let menuOps = {
   type: 'list',
   name: 'menuOptions',
   message: 'What would you like to do?',
@@ -36,7 +37,7 @@ let addDeparment = {
   type: 'input',
   name: 'name',
   message:'Enter the name of the department'
-} 
+}; 
 
 let addRole = [
   {
@@ -54,9 +55,61 @@ let addRole = [
     name: 'department',
     message: 'Enter the department for the role'
     },
+];
 
-]
+let addEmployee = [
+  {
+  type: 'input',
+  name: 'first_name',
+  message: 'Enter the first name of the employee'
+  },
+  {
+    type: 'input',
+    name: 'last_name',
+    message: 'Enter last name of the employee'
+  },
+  {
+    type: 'input',
+    name: 'role',
+    message: 'Enter the role of the employee'
+  },
+  {
+    type: 'input',
+    name: 'manager',
+    message: 'Enter the manager of the employee'
+  }
+];
+// initial function
+function init(){
 
+  inquirer.prompt(menuOps).then((answer) => {
+    menuData = answer.menuOptions;
+    if(menuData === 'View all departments'){
+      getDepartments();
+    };
+    if(menuData === 'View all roles'){
+      getRoles();
+    };
+    if(menuData === 'View all employees'){
+      getEmployees();
+    };
+    if(menuData === 'Add a department'){
+      addsDepartment();
+    };
+    if(menuData === 'Add a role'){
+      addsRole();
+    };
+    if(menuData === 'Add an employee'){
+      addsEmployee();
+    };
+    if(menuData === 'Update an employee role'){
+      uEmployeeRole();
+    };
+
+  })
+}
+
+function getDepartments(){
 //Query for departments table
 db.promise().query(
   'SELECT * FROM department ')
@@ -66,9 +119,13 @@ db.promise().query(
 
   })
   .catch(console.log)
-  .then( ()=> console.log('Query for departments successful')
-);
+  .then( ()=> {
+    console.log('Query for departments successful')
+    init();
+  });
+};
 
+function getRoles() {
 //Query for roles table
 db.promise().query(
   'SELECT * FROM roles ')
@@ -78,23 +135,36 @@ db.promise().query(
 
   })
   .catch(console.log)
-  .then( ()=> console.log('Query for roles successful')
-);
+  .then( ()=> {
+    console.log('Query for roles successful');
+    init();
+  });
+};
 
+function getEmployees(){
 //Query for employees table
 db.promise().query(
   'SELECT * FROM employee ')
   .then(([fields,rows]) => {
     // print table with fields
     console.table(fields);
-
   })
   .catch(console.log)
-  .then( ()=> console.log('Query for employees successful')
-);
+  .then( ()=> {
+    console.log('Query for employees successful')
+    init();
+  });
+};
 
+function addsDepartment(){};
 
+function addsRole(){};
 
+function addsEmployee(){};
+
+function uEmployeeRole(){};
+
+init();
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
