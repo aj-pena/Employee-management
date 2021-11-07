@@ -17,32 +17,28 @@ CREATE TABLE example (
 );
 
 CREATE TABLE department (
-    department_id int NOT NULL,
-    PRIMARY KEY (department_id)
+    ID int NOT NULL,
+    PRIMARY KEY (ID)
 );
+-- add column to department table
+ALTER TABLE department ADD name_dept VARCHAR(30) AFTER ID 
 
 CREATE TABLE roles (
-    role_id int NOT NULL,
+    ID int NOT NULL,
     title VARCHAR(30),
     salary DECIMAL,
     department_id INT,
-    PRIMARY KEY (role_id),
-    FOREIGN KEY (department_id) REFERENCES department(department_id)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (department_id) REFERENCES department(ID)
 );
 
 CREATE TABLE employee (
-    employee_id int NOT NULL,
+    ID int NOT NULL,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
     role_id INT,
     manager_id INT,
-    PRIMARY KEY (employee_id),
-    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (role_id) REFERENCES roles(ID)
 );
 
--- Insert multiple produce items --
-INSERT INTO produce (id, name)
-VALUES
-    ( 1, "apple"),
-    ( 2, "orange"),
-    ( 3, "banana");
