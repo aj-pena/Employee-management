@@ -35,14 +35,14 @@ let menuOps = {
 
 let addDeparment = {
   type: 'input',
-  name: 'name',
+  name: 'dept_name',
   message:'Enter the name of the department'
 }; 
 
 let addRole = [
   {
   type: 'input',
-  name: 'name',
+  name: 'role_name',
   message: 'Enter the name of the role'
   },
   {
@@ -53,7 +53,7 @@ let addRole = [
   {
     type: 'input',
     name: 'department',
-    message: 'Enter the department for the role'
+    message: 'Enter the department id (integer) for the role'
     },
 ];
 
@@ -94,10 +94,17 @@ function init(){
       getEmployees();
     };
     if(menuData === 'Add a department'){
-      addsDepartment();
+      inquirer.prompt(addDeparment).then(
+        (answer) => {
+        let deptName = answer.dept_name;
+        addsDepartment(deptName);
+      })      
     };
     if(menuData === 'Add a role'){
-      addsRole();
+      inquirer.prompt(addRole).then(
+        (answer) => {
+        addsRole(answer);        
+      })
     };
     if(menuData === 'Add an employee'){
       addsEmployee();
@@ -156,22 +163,28 @@ db.promise().query(
   });
 };
 
-function addsDepartment(){
+function addsDepartment(data){
   // Query to add a department
   db.promise().query(
-    'INSERT INTO * FROM employee ')
-    .then(([fields,rows]) => {
-      // print table with fields
-      console.table(fields);
-    })
+    `INSERT INTO departments (name_dept) VALUES ('${data}')`)
+    .then(console.log('creating deparment'))
     .catch(console.log)
     .then( ()=> {
-      console.log('Query for employees successful')
+      console.log(`New department ${data} created successfully`)
       init();
     });
 };
 
-function addsRole(){};
+function addsRole(data){
+  db.promise().query(
+    `INSERT INTO roles (title, salary, department_id) VALUES ('${data.role_name}','${data.salary}','${data.department}')`)
+    .then(console.log('creating role'))
+    .catch(console.log)
+    .then( ()=> {
+      console.log(`New role ${data.role_name} created successfully`)
+      init();
+    });
+};
 
 function addsEmployee(){};
 
