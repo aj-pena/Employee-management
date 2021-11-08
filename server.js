@@ -71,12 +71,12 @@ let addEmployee = [
   {
     type: 'input',
     name: 'role',
-    message: 'Enter the role of the employee'
+    message: 'Enter the role id of the employee'
   },
   {
     type: 'input',
     name: 'manager',
-    message: 'Enter the manager of the employee'
+    message: 'Enter the manager id of the employee'
   }
 ];
 // initial function
@@ -102,12 +102,12 @@ function init(){
     };
     if(menuData === 'Add a role'){
       inquirer.prompt(addRole).then(
-        (answer) => {
-        addsRole(answer);        
-      })
+        (answer) => addsRole(answer)        
+      )
     };
     if(menuData === 'Add an employee'){
-      addsEmployee();
+      inquirer.prompt(addEmployee).then(
+        (answer) => addsEmployee(answer))
     };
     if(menuData === 'Update an employee role'){
       uEmployeeRole();
@@ -177,7 +177,7 @@ function addsDepartment(data){
 
 function addsRole(data){
   db.promise().query(
-    `INSERT INTO roles (title, salary, department_id) VALUES ('${data.role_name}','${data.salary}','${data.department}')`)
+    `INSERT INTO roles (title, salary, department_id) VALUES ('${data.role_name}',${data.salary},${data.department})`)
     .then(console.log('creating role'))
     .catch(console.log)
     .then( ()=> {
@@ -186,7 +186,16 @@ function addsRole(data){
     });
 };
 
-function addsEmployee(){};
+function addsEmployee(data){
+  db.promise().query(
+    `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('${data.first_name}','${data.last_name}',${data.role},${data.manager})`)
+    .then(console.log('registering new employee'))
+    .catch(console.log)
+    .then( ()=> {
+      console.log(`New employee ${data.first_name} ${data.last_name} has been registered successfully`)
+      init();
+    });
+};
 
 function uEmployeeRole(){};
 
