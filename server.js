@@ -23,6 +23,7 @@ const db = mysql.createConnection({
   console.log('Connected to the emanagement database')
   );
 let menuData = '';
+let employee;
 
 // Menu options
 let menuOps = {
@@ -79,6 +80,7 @@ let addEmployee = [
     message: 'Enter the manager id of the employee'
   }
 ];
+
 // initial function
 function init(){
 
@@ -197,7 +199,34 @@ function addsEmployee(data){
     });
 };
 
-function uEmployeeRole(){};
+function uEmployeeRole(){
+  let employeesArray = [];
+  let updateEmployee = '';
+  db.promise().query(
+    'SELECT * FROM employees ')
+    .then(([fields,rows]) => {
+      
+      for(let i=0; i<fields.length;i++){
+        employeesArray.push(fields[i].ID);
+      }
+      updateEmployee = {
+        type: 'list',
+        name: 'chosenEmployee',
+        message: 'Select an employee to update',
+        choices: employeesArray
+      };
+      
+    }
+    )
+    .catch(console.log)
+    .then( ()=> {
+      inquirer.prompt(updateEmployee).then((answer)=>{
+        console.log(answer);
+      });
+      // console.log('Query for employees successful')
+      // init();
+    });
+};
 
 init();
 
